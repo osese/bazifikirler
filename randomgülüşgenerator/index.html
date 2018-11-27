@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<style>
+  .w-25{
+    width: 25vw;
+  }
+  button{
+    height: 100px;
+    background: palegoldenrod;
+
+  }
+  mp-0 {
+    margin:0px;
+    padding: 0px;
+  }
+  div {
+    display: flex;
+  }
+  
+  *{
+    font-size: 16px;
+    font-family: monospace;
+  }
+</style>
+<body>
+  <header> 
+    <h1 style="text-align: center; font-size:3em; text-decoration: underline;">
+        RANDOM GÜLÜŞ GEN
+    </h1>
+  </header>
+  <div id="mode">
+      <button data-mode="asdf_mode" class="sq-25 mp-0"  style="flex:1;">
+      <img src="images/asdf.png"/>
+    </button>
+      <button data-mode="qwer_mode" class="sq-25 mp-0"  style="flex:1;">
+          <img src="images/qwe.png"/>
+      </button>
+      <button data-mode="karisik_mode" class="sq-25 mp-0"  style="flex:1;">
+          <img src="images/mix.png"/>
+      </button>
+      <button data-mode="sade_harf" class="sq-25 mp-0"  style="flex:1;">
+        <img src="images/blocks.png"/>
+      </button>
+  </div>
+  
+  <div>
+      <button onclick="salla()"> 
+        <img src="images/die.png" />
+        
+      </button>
+      <textarea type="text" id="sonuc" style="flex:1;"> </textarea>
+    <button onclick="kopyala()">         <img src="images/copy.png"/>
+      </button> 
+  </div>
+  <div id="umode" >
+      <button data-mode="insan" style="flex:1;"><img src="images/brain.png" />
+      </button>
+      <button data-mode="okuz" style="flex:1;"><img src="images/bull.png" /> </button>
+      <button data-mode="dokuz" style="flex:1;"> <img src="images/bull-2.png" />  </button>
+  </div>
+  
+  <div>
+    <h6 > Mode: </h6>
+    <h6 id="lm">asdf</h6>
+    <h6 id="lm">/</h6>
+    <h6 id="ld">insan</h6>
+  </div>
+</body>
+
+<script>
+var asdf_mode = [
+'a', 's', 'd', 'f'
+];
+var qwer_mode = [
+  'q', 'w', 'e'
+];
+var sade_harf = [
+"A",
+ "B",
+ "C",
+ "D",
+ "E",
+ "F",
+ "G",
+ "H",
+ "I",
+ "J",
+ "K",
+ "L",
+ "M",
+ "N",
+ "O",
+ "P",
+ "Q",
+ "R",
+ "S",
+ "T",
+ "U",
+ "V",
+ "W",
+ "X",
+ "Y",
+ "Z",
+ "Ö",
+ "ö",
+ "Ş",
+ "Ü",
+ "ü",
+ "ş",
+ "ı",
+ "İ",
+ "ğ",
+ "Ğ",
+"ç",
+"Ç",
+ "a",
+ "b",
+ "c",
+ "d",
+ "e",
+ "f",
+ "g",
+ "h",
+ "i",
+ "j",
+ "k",
+ "l",
+ "m",
+ "n",
+ "o",
+ "p",
+ "q",
+ "r",
+ "s",
+ "t",
+ "u",
+ "v",
+ "w",
+ "x",
+ "y",
+ "z",
+];
+var karisik_mode = [
+  "!",
+ "#",
+ "$",
+ "%",
+ "&",
+ "'",
+ "(",
+ ")",
+ "*",
+ "+",
+ ",",
+ "-",
+ ".",
+ "/",
+ "0",
+ "1",
+ "2",
+ "3",
+ "4",
+ "5",
+ "6",
+ "7",
+ "8",
+ "9",
+ ";",
+ "<",
+ "=",
+ ">",
+ "?",
+ "@",
+ "A",
+ "B",
+ "C",
+ "D",
+ "E",
+ "F",
+ "G",
+ "H",
+ "I",
+ "J",
+ "K",
+ "L",
+ "M",
+ "N",
+ "O",
+ "P",
+ "Q",
+ "R",
+ "S",
+ "T",
+ "U",
+ "V",
+ "W",
+ "X",
+ "Y",
+ "Z",
+ "Ö",
+ "ö",
+ "Ş",
+ "Ü",
+ "ü",
+ "ş",
+ "ı",
+ "İ",
+ "ğ",
+ "Ğ",
+"ç",
+"Ç",
+ "[",
+ "]",
+ "^",
+ "_",
+ "`",
+ "a",
+ "b",
+ "c",
+ "d",
+ "e",
+ "f",
+ "g",
+ "h",
+ "i",
+ "j",
+ "k",
+ "l",
+ "m",
+ "n",
+ "o",
+ "p",
+ "q",
+ "r",
+ "s",
+ "t",
+ "u",
+ "v",
+ "w",
+ "x",
+ "y",
+ "z",
+ "{",
+];
+var mode = 'asdf_mode'; 
+var u_mode = 'insan';
+var a = asdf_mode;
+
+var lmode = document.getElementById("lm");
+var ldmode = document.getElementById("ld");
+
+
+
+document.getElementById('mode').addEventListener('click', function(event){
+  if(event.target.tagName == 'BUTTON'){
+    mode = event.target.getAttribute('data-mode');
+    console.log(event.target);
+    lmode.innerText = mode;
+    event.stopPropagation;
+  }
+ 
+});
+
+document.getElementById('umode').addEventListener('click', function(event){
+  if(event.target.tagName == 'BUTTON'){
+    u_mode = event.target.getAttribute('data-mode');
+    ldmode.innerText = u_mode;
+    event.stopPropagation;
+  }
+});
+
+function salla(){
+
+    if(mode == 'asdf_mode'){
+      a = asdf_mode;
+    }else if(mode == 'qwer_mode'){
+      a = qwer_mode;
+    }else if(mode == 'sade_harf'){
+      a = sade_harf;
+    }else if(mode == 'karisik_mode'){
+      a = karisik_mode;
+    }
+    var n = 10; 
+    if(u_mode == 'insan'){
+      n = 10;
+    }else if(u_mode == 'okuz'){
+      n = 280;
+    }else{
+      n = 280; 
+    }
+    var sonuc = document.getElementById("sonuc");
+    
+    var alen = a.length;
+    var res = "";
+    for(var i=0; i<n; i++){
+      var x = Math.random()*alen;
+      res += a[Math.floor(x)];
+      if(u_mode == 'dokuz'){
+        if(Math.random() > 0.5){
+          res += "\n";
+        }else{
+          res += " ";
+        }
+      }
+    }
+    console.log(res);
+    sonuc.value = res;
+  }
+
+function kopyala(){
+  var copyText = document.getElementById("sonuc");
+  copyText.select();
+  document.execCommand("copy");
+}
+</script>
+</html>
