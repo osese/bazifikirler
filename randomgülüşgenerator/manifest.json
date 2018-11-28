@@ -1,0 +1,14 @@
+{
+  "short_name": "Gülgen",
+  "name": "Random Gülüş Generator",
+  "icons": [
+    {
+      "src": "/images/logo-120.png",
+      "type": "image/png",
+      "sizes": "120x120"
+    }
+  ],
+  
+  "display": "standalone"
+  
+}
