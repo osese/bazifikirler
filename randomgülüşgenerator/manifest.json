@@ -3,12 +3,14 @@
   "name": "Random Gülüş Generator",
   "icons": [
     {
-      "src": "/images/logo-120.png",
+      "src": "logo-120.png",
       "type": "image/png",
       "sizes": "120x120"
     }
   ],
   
-  "display": "standalone"
-  
+  "display": "standalone",
+  "background_color": "#3367D6",
+  "theme_color": "#3367D6",
+  "start_url": "/"
 }
