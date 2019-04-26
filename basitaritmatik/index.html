@@ -1,0 +1,273 @@
+<html lang="en" style="height: auto; min-height: 100%;"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<!-- jQuery 3 -->
+	<script src="jquery.min.js"></script>
+
+<style>
+body{
+	font-size: 40px;
+}
+
+.header, .main, .footer, .foo{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	height: 10vh;
+	border: 1px solid blue;
+	margin-bottom: 1rem;
+}
+
+#skor{
+	color: red;
+	text-decoration: underline;
+}
+
+button{
+	height: 2rem;
+	color: blue;
+	background: white;
+}
+#cevap{
+	font-size: 2.5rem;
+	text-align: center;
+}
+.k { background: white; }
+.o { background: yellow; }
+.z { background: red;}
+</style>
+<script type="text/javascript">
+	function rastgeleSoruOlustur(){
+		var scalar = 100;
+		// x + y = z 
+		// returns  x, +, y, z triple 
+		var operators = ['+', '-', '/', '*'];
+		var opi = parseInt(Math.random() * 4)
+		var a = parseInt(Math.random() * scalar + 1);
+		var b = parseInt(Math.random() * scalar + 1);
+		var op = operators[opi];
+		var res = eval(a + ' ' + op + b);
+		if(!Number.isInteger(res)){
+			res = res.toFixed(2);
+		}
+		return [a, op,  b, res]; 
+	}
+	
+	var all_questions = [];
+	
+	$(document).ready(function(){
+	
+		/*var player = {
+			_name: "ömer",
+			_skor: 0, 
+			_d: 0,
+			_y: 0,
+			_zaman: 0,
+			set skor(x){
+				
+			}
+		}; */
+		var s = 0; 	// saniye
+		var d = 0;  // dakika
+		var $timer = $('#timer');
+		var $startbutton = $('#startbutton');
+		var $stopbutton = $('#stopbutton');
+		var $soru = $('#soru');
+		var zorluk = "KOLAY";
+		var sorutipleri = ["KOLAY", "ORTA", "ZOR"];
+		var puantipleri = {
+			"KOLAY": 1,
+			"ORTA": 2,
+			"ZOR": 3,
+		};
+		var $cevap = $('#cevap');
+		var $foo = $('#foo');
+		var cevap = null;
+		var player = {};
+		player.dogru = 0;
+		player.yanlıs = 0;
+		player.name = "ömer";
+		player.skor = 0;
+		var $skor = $('#skor');
+		var intervalHandler = null;
+		
+		$timer.text('0 : 00');
+		$skor.text('0');
+		
+		window.start = function(){
+			startTimer();
+			setSoru();
+		};
+		window.stop = function(){
+			stopTimer();
+		};
+		
+		var setBackground = function(){
+			if(zorluk == "KOLAY"){
+				$('body').removeClass('o');
+				$('body').removeClass('z');
+			}else if(zorluk == "ORTA"){
+				$('body').addClass('o');
+				$('body').removeClass('z');
+
+			}else{
+				$('body').addClass('z');
+				$('body').removeClass('o');
+
+			}
+		}
+		var setZorluk = function(q){
+			var a = [0,0,0,0,0,0,0,0,0,0];
+			var t = [3,4,7,8];
+			var scale = 1;
+			if (q[1] == '*' || q[1] == '/'){
+				scale = 2;
+			}
+			
+			var text = q[0] + '' + q[2];
+		
+			for(var i of text){
+				if(i != '.' && i != '-'){
+					a[i] += 1;
+				}
+			}
+			var k = 0;
+			var b = 0;
+			for(var i  = 0; i < 10; i++){
+				if(i < 6){
+					k += a[i];
+				}else{
+					b += a[i] * scale;
+				}
+			}
+			
+			if(k > b){
+				zorluk = "KOLAY";
+			}else if( b - k < 3 ){
+				zorluk = "ORTA";
+			}else{
+				zorluk = "ZOR";
+			}
+			console.log(zorluk);
+			console.log(a);
+			console.log(k);
+			console.log(b);
+			setBackground();
+		};
+		
+		var setSoru = function(){
+			var q = rastgeleSoruOlustur();	
+			all_questions.push(q);
+			$soru.text(q[0] + ' ' + q[1] + ' ' + q[2]);
+			cevap = q[3];
+			setZorluk(q);
+		};
+		
+		var feedback = function(i){
+			if(i == 0){
+				$foo.text('TÜH! cevap: ' + cevap);
+			}else if(i==1){
+				$foo.text('DOĞRU \\0/');
+				player.skor += puantipleri[zorluk];
+				$skor.text(player.skor);
+				player.dogru += 1;
+			}else{
+				$foo.text(i);
+				player.yanlıs += 1;
+			}
+			setTimeout(function(){
+				$foo.text('');
+			}, 3000);
+		}
+		
+		var checkCevap = function(){
+			if($cevap.val() == parseFloat(cevap)){
+				player.dogru += 1;
+				feedback(1);
+			}else{
+				player.yanlıs += 1;
+				feedback(0);
+			}
+			
+			setSoru();
+		};
+		
+		var startTimer = function(){
+			
+			var t = null;
+			intervalHandler = setInterval(function(){	
+				if(s / 10 < 1){
+					t = d + ' : 0' + s;
+				}else{
+					t = d + ' : ' + s;
+				}
+				$timer.text(t);
+				s += 1;
+				if(s % 60 == 0){
+					s = 0;
+					d+= 1;
+				}
+			}, 1000);
+		};
+		
+		window.stopTimer = function(){
+			clearInterval(intervalHandler);
+		};
+		
+		$(document).click(function(){
+			$cevap.focus();
+		});
+		
+		$cevap.keyup(function(e){
+			if(e.keyCode == 13){
+				checkCevap();
+				$cevap.val('');
+			}
+		});
+		
+		window.done = function(){
+			kaydet();
+			feedback('kaydedildi');
+			stopTimer();
+			window.location.reload();
+		};
+		
+		var kaydet = function(){
+			var key = new Date().toLocaleString();
+			var val = JSON.stringify(
+				{
+					skor: player.skor,
+					dogru: player.dogru,
+					yanlıs: player.yanlıs,
+					sure: d*60 + s,
+				}
+			);
+			window.localStorage.setItem(key, val);
+		};
+	});
+</script>
+</head>
+<body>
+	<div class="header">
+		<div id="skor"> </div>
+		<div id="timer"> </div>
+		<div><button id="startbutton" type="button" onclick="start()"> Başlat </button> </div>
+		<div><button id="stopbutton" type="button" onclick="stop()"> Durdur </button> </div>
+		<div><button id="donebutton" type="button" onclick="done()"> Bitir </button></div>
+	</div>
+	<div class="main">
+		<div id="soru"> ? </div>
+	</div>	
+	<div class="footer">
+		<input type="text" id="cevap"/>
+	</div>	
+	<div class="foo" id="foo">
+		
+	</div>
+</body>
+</html>
