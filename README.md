@@ -1,3 +1,5 @@
 # bazifikirler
 
+
+
 küçük küçük projeler. 
