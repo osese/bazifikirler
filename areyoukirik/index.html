@@ -1,0 +1,102 @@
+<html lang="en" style="height: auto; min-height: 100%;"><head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+
+	<!-- jQuery 3 -->
+	<script src="jquery.min.js"></script>
+
+<style>
+body{
+	font-size: 40px;
+	background-image: url('https://media.giphy.com/media/iesygExkPilc0oeNZr/giphy.gif');
+}
+
+.header, .main, .footer, .foo{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	height: 10vh;
+	border: 1px solid blue;
+	margin-bottom: 1rem;
+}
+
+#skor{
+	color: red;
+	text-decoration: underline;
+}
+
+button{
+	height: 2rem;
+	color: blue;
+	background: white;
+}
+#cevap{
+	font-size: 2.5rem;
+	text-align: center;
+}
+.k { background: white; }
+.o { background: yellow; }
+.z { background: red;}
+</style>
+<script type="text/javascript">
+	var mesajlarKotu = [
+		'Kiriksin Ollummm',
+		'Sende de var bir şeyler',
+		'Test result is positive',
+		'Hadi yok diyelim, niye testi çözüyorsun',
+		'Evet',
+	];
+	
+	var mesajIyi = 'HAYIR, kırık değilsin.';
+	$(function(){
+		$('#basla').click(function(){
+			$('#first-page').hide();
+			$('#second-page').show();
+			
+			var cevap = $('#cevap').val();
+			$('#isim').text(cevap);
+			if(cevap === "Alican" || cevap == 'Erdem' || cevap == 'Alperen'){
+				var rand = Math.round(Math.random() * 10) % 5;
+				$('#mesaj').text(mesajlarKotu[rand]);
+			}else{
+				$('#mesaj').text(mesajIyi);
+			}
+		});
+		
+		$('#tekrar-dene').click(function(){
+			$('#first-page').show();
+			$('#second-page').hide();
+		});
+	});
+</script>
+</head>
+<body>
+<div id="first-page">
+	<div class="header">
+		Are you kirik ? 
+	</div>
+	<div class="main">
+		<input type="text" id="cevap"/>
+	</div>	
+	<div class="main">
+		<div id="soru"> <button id="basla"> TESTE BAŞLA </button> </div>
+	</div>
+</div>
+
+
+<div id="second-page" style="display: none">
+	<div class="main"> <b>SONUÇ </b>
+	</div>
+	<div class="footer"><span id="isim"></span><i id="mesaj"></i></div>	
+	<div class="main">
+	<button id="tekrar-dene"> Tekrar Dene </button>
+	</div>
+		
+</div>
+
+</body>
+</html>
